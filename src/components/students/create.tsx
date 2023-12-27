@@ -10,13 +10,14 @@ import {
 	Button,
 	Divider,
 	Stack,
+	OutlinedInput,
+	InputAdornment 
 } from '@mui/material';
 import '../../index';
 import styled from 'styled-components';
 import { ToastSuccess, ToastError } from '../../utils';
-import { studentType, IStudent, errorStudent } from '../../models/student'
+import { studentType, IStudent, errorStudent } from '../../model/student'
 import userService from '../../services/userService';
-import { useForm } from 'react-hook-form';
 
 
 interface TProps {
@@ -41,6 +42,7 @@ const StyledInputLabel = styled(InputLabel)`
 	margin-top:12px;
 `;
 
+
 export default function Create(props: TProps) {
 	const [facultyList, setFacultyList] = useState([]);
 	const [facultyId, setFacultyId] = useState(0);
@@ -50,7 +52,11 @@ export default function Create(props: TProps) {
 
 	const handleChange = (e: any) => {
 		const { name, value } = e.target;
+		if (e.target.name === 'faculty_id') {
+			handleChangeFaculty(e);
+		}
 		setStudent({ ...student, [name]: value });
+		
 	}
 
 	useEffect(() => {
@@ -68,7 +74,7 @@ export default function Create(props: TProps) {
 	}, [props.studentId]);
 
 	const getDatFaculty = () => {
-		userService.get({ path: 'data-name-faculty' })
+		userService.get({ path: 'data-faculty' })
 			.then(res => {
 				setFacultyList(res.data.data);
 			})
@@ -170,7 +176,7 @@ export default function Create(props: TProps) {
 						</FormControl>
 						{errorList.gender && <p> {errorList['gender'][0]}</p>}
 
-						<StyledTextField required value={student.birthday} focused type='date' size='small' onChange={handleChange} label='Birthday' name='birthday' />
+						<StyledTextField required value={student.birthday} type='date' size='small' onChange={handleChange} name='birthday' />
 						{errorList.birthday && <p> {errorList['birthday'][0]}</p>}
 
 						<StyledTextField required value={student.address} size='small' onChange={handleChange} name='address' label='Address' />
@@ -181,7 +187,7 @@ export default function Create(props: TProps) {
 
 						<FormControl fullWidth>
 							<StyledInputLabel>Faculty</StyledInputLabel>
-							<StyledSelect required value={facultyId} size='small' onChange={handleChangeFaculty} name='faculty_id' label='Faculty'>
+							<StyledSelect required value={student.faculty_id} size='small' onChange={handleChange} name='faculty_id' label='Faculty'>
 								{facultyList.map((item: any) => {
 									return (<MenuItem value={item.id}>{item.name}</MenuItem>)
 								})}

@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid, GridColDef, GridValueGetterParams, GridRowParams, GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import DialogConfirm from '../../common/dialogCofirm';
+import DialogConfirm from '../../common/Dialog/dialogCofirm';
 import Button from '@mui/material/Button';
 import Create from './create';
 import userService from '../../services/userService';
 import { ToastError, ToastSuccess } from '../../utils';
+import { useDispatch } from 'react-redux';
+import { useSelector, AppDispatch } from '../../store/configureStore';
+import { setStatusEditModel, setIsNew } from '../../store/Student/slice';
+import { getStudentById, deleteStudentById, fechthStudents } from '../../store/Student/operations';
 
 const Home = () => {
 	const [studentList, setStudentList] = useState([]);
@@ -17,7 +21,9 @@ const Home = () => {
 	const [isNew, setIsNew] = useState(false);
 	const [changeStudent, setChangeStudent] = useState(false);
 	const [rowSelection, setRowSelection] = useState([]);
-
+	const dispatch = useDispatch<AppDispatch>();
+	const studentList1 = useSelector((state) => state.students.data);
+  
 	const toggle = (params: number) => {
 		setisOpen(!isOpen);
 		setStudentId(params);
@@ -39,6 +45,8 @@ const Home = () => {
 	}, []);
 
 	useEffect(() => {
+		dispatch(fechthStudents());
+		setStudentList(studentList);
 		getListStudent();
 	}, [changeStudent]);
 
@@ -50,7 +58,7 @@ const Home = () => {
 	}
 
 	const getListMajor = () => {
-		userService.get({ path: 'data-major' })
+		userService.get({ path: 'data-major-trash' })
 			.then(res => {
 				setMajorList(res.data.data);
 			})
@@ -59,12 +67,12 @@ const Home = () => {
 	const handelDeleteAll = () => {
 		if (rowSelection.length > 1) {
 			userService.post({ path: 'delete-all-student', data: { list: rowSelection } })
-				.then((res) => {
-					if (res.data.status) {
-						ToastSuccess('Delete student successful');
-						handleChangeListStudent();
-					}
-				})
+			.then((res) => {
+				if (res.data.status) {
+					ToastSuccess('Delete student successful');
+					handleChangeListStudent();
+				}
+			})
 		} else {
 			ToastError('Please select more than 1 student');
 		}
@@ -85,6 +93,7 @@ const Home = () => {
 			})
 			.catch(error => console.log(error));
 	}
+	
 	const columns: GridColDef[] = [
 		{ field: 'student_id', headerName: 'ID', width: 100 },
 		{ field: 'name', headerName: 'Name', width: 350 },

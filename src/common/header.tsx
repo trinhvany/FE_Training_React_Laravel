@@ -6,18 +6,24 @@ import Typography  from '@mui/material/Typography';
 import LogoutIcon from '@mui/icons-material/Logout';
 import userService from '../services/userService';
 import { ToastSuccess } from '../utils';
+import Login from '../components/Account/login';
 
 const create = () => {
 
-	// const handelLogout = () => {
-	// 	userService.post({ path: 'logout' })
-	// 		.then((res) => {
-	// 			if (res.data.status) {
-	// 				ToastSuccess('Logout  successful');
-	// 				window.location.replace('http://localhost:3000/login');
-	// 			}
-	// 		})
-	// 	} 
+	const handelLogout = () => {
+		userService.post({ path: 'logout' })
+			.then((res) => {
+				if (res.data.status) {
+					ToastSuccess('Logout  successful');
+          localStorage.removeItem('token');
+          localStorage.removeItem('token_expires_in');
+          localStorage.removeItem('refresh_token');
+          setTimeout(function() {
+            window.location.pathname = '/login';
+          }, 2000)
+				}
+			})
+		} 
 
 	return (
 		<AppBar sx={{ height: 60 }} position="static" >
@@ -29,7 +35,7 @@ const create = () => {
 					List
 				</Typography>
 				<IconButton edge="end" color="inherit" sx={{ mr: 2 }}>
-					{/* <LogoutIcon onClick={handelLogout} /> */}
+					<LogoutIcon onClick={handelLogout} />
 				</IconButton>
 			</Toolbar>
 		</AppBar>

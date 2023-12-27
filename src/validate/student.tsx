@@ -1,4 +1,4 @@
-import { studentType, IStudent, errorStudent } from '../models/student'
+import { studentType, IStudent, errorStudent } from '../model/student'
 export const validateStudent = (student:IStudent) => {
   var errors = errorStudent;
   if(student.name === '') {

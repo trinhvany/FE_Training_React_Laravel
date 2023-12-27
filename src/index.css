@@ -24,6 +24,12 @@ code {
 	margin: 5px 0
 }
 
+.modal-major p {
+	color: #bf1650;
+	margin: 5px 0
+}
+
+
 ​ p::before {
 	display: inline;
 }
@@ -39,5 +45,20 @@ code {
 	overflow: scroll;
 	height: 750px;
 	padding: 20px 30px 30px 30px;
+}
+
+.modal-major {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 400;
+	background-color: #fff;
+	border: 2px solid #000;
+	box-shadow: 24;
+	padding: 20px 30px 30px 30px;
+	overflow: scroll;
+	height: 350px;
+	display: block;
 }
 

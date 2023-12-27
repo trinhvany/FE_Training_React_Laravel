@@ -8,7 +8,7 @@ p::before {
 }
 
 .modal {
-  position: absolute;
+	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
@@ -16,9 +16,23 @@ p::before {
 	background-color: #fff;
 	border: 2px solid #000;
 	box-shadow: 24;
-  padding: 20px 30px 30px 30px;
-  overflow: scroll;
-  height: 650px;
-  display: block;
+	padding: 20px 30px 30px 30px;
+	overflow: scroll;
+	height: 650px;
+	display: block;
 }
 
+.modal-major {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 400;
+	background-color: #fff;
+	border: 2px solid #000;
+	box-shadow: 24;
+	padding: 20px 30px 30px 30px;
+	overflow: scroll;
+	height: 300px;
+	display: block;
+}

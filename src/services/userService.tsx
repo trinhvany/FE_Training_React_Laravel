@@ -1,6 +1,7 @@
 import axios from 'axios';
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
 
-const API_ENDPOINT = 'http://127.0.0.1:8000/api';
+const API_ENDPOINT = 'http://127.0.0.1:8085/api';
 interface config {
 	path:string,
 	id?:number,
