@@ -7,7 +7,8 @@ import Button from '@mui/material/Button';
 import Create from '../majors/create';
 import userService from '../../services/userService';
 import { ToastError, ToastSuccess } from '../../utils';
-
+import Footer from '../../common/Main/footer';
+import api from '../../auth/api';
 
 const Home = () => {
 	const [majorList, setMajorList] = useState([]);
@@ -43,18 +44,32 @@ const Home = () => {
 		getListMajor();
 	}, [changeMajor]);
 
-	const getFacultyList = () => {
-		userService.get({ path: 'data-faculty' })
-		.then(res => {
-			setFacultyList(res.data.data);
-		})
+	const getFacultyList = async() => {
+		try {
+			const response = await api.get('/data-faculty');
+			setMajorList(response.data.data);
+		} catch (error) {
+			setTimeout(() => {
+				window.location.replace('http://localhost:3000/login');
+				localStorage.removeItem("token");
+				localStorage.removeItem("refresh_token");
+				localStorage.removeItem("token_expires_in");
+			}, 1000);
+		}
 	}
 
-	const getListMajor = () => {
-		userService.get({ path: 'data-major' })
-			.then(res => {
-				setMajorList(res.data.data);
-			})
+	const getListMajor = async () => {
+		try {
+			const response = await api.get('/data-major');
+			setMajorList(response.data.data);
+		} catch (error) {
+			setTimeout(() => {
+				window.location.replace('http://localhost:3000/login');
+				localStorage.removeItem("token");
+				localStorage.removeItem("refresh_token");
+				localStorage.removeItem("token_expires_in");
+			}, 1000);
+		}
 	}
 
 	const handelDeleteAll = () => {
@@ -84,7 +99,6 @@ const Home = () => {
 					setisOpen(!isOpen);
 				}
 			})
-			.catch(error => console.log(error));
 	}
 	
 	const columns: GridColDef[] = [
@@ -120,6 +134,7 @@ const Home = () => {
 				getRowId={(row) => row.id}
 				onRowSelectionModelChange={(ids: any) => setRowSelection(ids)}
 			/>
+			<Footer/>
 			<DialogConfirm
 				toggle={toggle}
 				isOpen={isOpen}

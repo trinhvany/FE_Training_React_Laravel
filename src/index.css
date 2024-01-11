@@ -19,7 +19,8 @@ code {
 	width: 100%;
 	height: 40px;
 }
-.modal p {
+.modal p,
+.login span {
 	color: #bf1650;
 	margin: 5px 0
 }
@@ -28,6 +29,7 @@ code {
 	color: #bf1650;
 	margin: 5px 0
 }
+
 
 
 ​ p::before {

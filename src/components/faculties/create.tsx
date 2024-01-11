@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
 	TextField,
-	Select,
-	InputLabel,
 	Box,
 	Modal,
 	Button,
@@ -14,7 +12,6 @@ import styled from 'styled-components';
 import { ToastSuccess, ToastError } from '../../utils';
 import userService from '../../services/userService';
 import { facultyType, IFaculty, errorFaculty } from '../../model/faculty';
-
 
 interface TProps {
 	isNew: boolean,
@@ -96,7 +93,7 @@ export default function Create(props: TProps) {
 					<h2 id='parent-modal-title'>{(props.isNew) ? 'Create New Faculty' : 'Edit Faculty'}</h2>
 					<Divider />
 					<form onSubmit={(e) => handleSubmit(e)}>
-						<StyledTextField disabled value={faculty.id} name='faculty_id' onChange={handleChange} size='small' label='Faculty Id' placeholder='Auto gerate' />
+						<StyledTextField disabled value={faculty.id} name='student_id' onChange={handleChange} size='small' label='Faculty Id' placeholder='Auto gerate' />
 						{errorList.id && <p> {errorList['id'][0]}</p>}
 
 						<StyledTextField required value={faculty.name} size='small' onChange={handleChange} name='name' label='Name' placeholder='Software Engineering' />

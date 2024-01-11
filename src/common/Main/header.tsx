@@ -10,10 +10,9 @@ import MenuItem from '@mui/material/MenuItem';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import LogoutIcon from '@mui/icons-material/Logout';
 import userService from '../../services/userService';
-import { ToastError, ToastSuccess } from '../../utils';
+import {ToastSuccess } from '../../utils';
 
 const create = () => {
-
 	const handelLogout = () => {
 		userService.post({ path: 'logout' })
 			.then((res) => {
@@ -21,14 +20,20 @@ const create = () => {
 					ToastSuccess(res.data.message);
 					setTimeout(function(){
 						window.location.replace('http://localhost:3000/login');
-					}, 2000)
+					}, 1000)
 					localStorage.removeItem("token");
 					localStorage.removeItem("refresh_token");
 					localStorage.removeItem("token_expires_in");
 				}
 			})
-		} 
+		}
 
+	var logoutButton;
+	if (localStorage.getItem("token") !== null) {
+		logoutButton = <IconButton color="inherit" sx={{ ml: 'auto' }}>
+							<LogoutIcon onClick={handelLogout}/>
+						</IconButton>
+	}
 
 	return (
 		<AppBar sx={{ height: 60 }} position="static" >
@@ -56,10 +61,8 @@ const create = () => {
 				</IconButton>
 				<Typography variant="h6" color="inherit" component="div">
 					List
-				</Typography>
-				<IconButton color="inherit" sx={{ mr: 2 }}>
-					<LogoutIcon onClick={handelLogout}/>
-				</IconButton>
+				</Typography> 
+				{logoutButton}
 			</Toolbar>
 		</AppBar>
 	)

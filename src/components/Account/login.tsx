@@ -10,7 +10,8 @@ import { Divider } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import userService from '../../services/userService';
 import { ToastError, ToastSuccess } from '../../utils';
-import PropTypes from 'prop-types';
+import { errorLogin } from '../../model/account';
+import Footer from '../../common/Main/footer';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -22,6 +23,8 @@ const TInfoLogin = {
 
 export default function Login() {
 	const [infoLogin, setInfoLogin] = useState(TInfoLogin);
+	const [errorList, setErrorList] = useState(errorLogin);
+
 	const handleChange = (e: any) => {
 		const { name, value } = e.target;
 		setInfoLogin({...infoLogin, [name]: value});
@@ -35,7 +38,7 @@ export default function Login() {
 				ToastSuccess('Login successful');
 				setTimeout(() => {
 					window.location.replace('http://localhost:3000');
-				}, 2000);
+				}, 1000);
 				localStorage.setItem('token', response.data.access_token);
 				localStorage.setItem('token_expires_in', response.data.token_expires_in);
 				localStorage.setItem('refresh_token', response.data.refresh_token);
@@ -43,12 +46,21 @@ export default function Login() {
 				ToastError('Login failed');
 			}
 		})
-	};
-
+		.catch((res) => {
+			if ( ! res.response.data.errors) {
+				setErrorList({
+					email: [''],
+					password : ['Email or password incorrect'],
+				})
+			} else {
+				setErrorList(res.response.data.errors);
+			}
+		});
+	};	
 	return (
 		<ThemeProvider theme={defaultTheme}>
 			<Container component="main" maxWidth="xs">
-				<Box sx={{
+				<Box className = 'login' sx={{
 					marginTop: 8,
 					display: 'flex',
 					flexDirection: 'column',
@@ -73,6 +85,7 @@ export default function Login() {
 								autoComplete="email"
 								autoFocus
 							/>
+							{errorList['email'] && <span> {errorList['email'][0]}</span>}
 							<TextField
 								onChange={handleChange}
 								margin="normal"
@@ -84,6 +97,7 @@ export default function Login() {
 								id="password"
 								autoComplete="current-password"
 							/>
+							{errorList['password'] && <span> {errorList['password'][0]}</span>}
 							<Button
 								type="submit"
 								fullWidth
@@ -93,9 +107,7 @@ export default function Login() {
 								Sign In
 							</Button>
 							<Divider sx={{ mt: 2, mb: 2 }}></Divider>
-							<Typography sx={{ fontWeight: 'bold'}} component="h3" align='center'>
-								D1 Laravel & React Project
-							</Typography>
+							<Footer/>
 						</Box>
 				</Box>
 			</Container>

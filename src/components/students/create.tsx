@@ -56,7 +56,6 @@ export default function Create(props: TProps) {
 			handleChangeFaculty(e);
 		}
 		setStudent({ ...student, [name]: value });
-		
 	}
 
 	useEffect(() => {
@@ -153,7 +152,7 @@ export default function Create(props: TProps) {
 					<h2 id='parent-modal-title'>{(props.isNew) ? 'Create New Student' : 'Edit Student'}</h2>
 					<Divider />
 					<form onSubmit={(e) => handleSubmit(e)}>
-						<StyledTextField  value={student.student_id} name='student_id' onChange={handleChange} size='small' label='Student Id' placeholder='Auto gerate' />
+						<StyledTextField disabled value={student.student_id} name='student_id' onChange={handleChange} size='small' label='Student Id' placeholder='Auto gerate' />
 						{errorList.student_id && <p> {errorList['student_id'][0]}</p>}
 
 						<StyledTextField required value={student.email} size='small' onChange={handleChange} name='email' label='Student Email' placeholder='aaaaa@gmail.com' />
@@ -172,6 +171,7 @@ export default function Create(props: TProps) {
 							<StyledSelect required value={student.gender} size='small' onChange={handleChange} name='gender' label='Gender'>
 								<MenuItem value={0}>Male</MenuItem>
 								<MenuItem value={1}>Female</MenuItem>
+								<MenuItem value={2}>Other</MenuItem>
 							</StyledSelect>
 						</FormControl>
 						{errorList.gender && <p> {errorList['gender'][0]}</p>}
